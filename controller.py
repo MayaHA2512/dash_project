@@ -52,18 +52,20 @@ def login_auth(n_clicks, username, password):
      Input('spend-button', 'n_clicks'), ],
     [State('input-box', 'value'),
      State('select', 'value'),
+     State('category', 'value'),
+     State('description-box', 'value'),
      State('balance', 'children')],
     prevent_initial_call=True
 )
-def update_output(save_clicks, spend_clicks, user_input, selected_val, current_val):
+def update_output(save_clicks, spend_clicks, user_input, selected_val, category, description, current_val):
     print('inputs', save_clicks, spend_clicks, user_input, current_val)
     button_clicked = dash.ctx.triggered_id
     if button_clicked == 'save-button':
-        new_balance = model.update_balance(current=current_val, new_val=user_input, selected_method=selected_val)
+        new_balance = model.update_balance(current=current_val, new_val=user_input, selected_method=selected_val, category=category, description=description)
         print('save button balance', new_balance)
         return new_balance
     elif button_clicked == 'spend-button':
-        new_balance = model.spend_balance(current=current_val, new_val=user_input, selected_method=selected_val)
+        new_balance = model.spend_balance(current=current_val, new_val=user_input, selected_method=selected_val, category=category, description=description)
         return new_balance
 
 

@@ -2,6 +2,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import dash_bootstrap_components as dbc
 from model import model
+import dash_ag_grid as dag
 
 model_cfg = model()
 
@@ -11,17 +12,27 @@ card_content = [
     dbc.CardBody(
         [
             html.Div([
-                dbc.Input(id='input-box', type='text', style={ 'margin-bottom': '10px'}),
+                dbc.Input(id='description-box', type='text', style={'margin-bottom': '10px'}),
+                dbc.Input(id='input-box', type='text', style={'margin-bottom': '10px'}),
                 dbc.Select(
                     id="select",
                     options=[
                         {"label": "Cash", "value": "cash"},
                         {"label": "Credit Card", "value": "credit"},
                         {"label": "Debit Card", "value": "debit"},
-                    ],style={'margin-bottom': '7px'}
+                    ], style={'margin-bottom': '7px'}
                 ),
-                dbc.Button('Save', id='save-button', style={'margin-bottom': '7px', 'margin-right': '4px'}, color='secondary'),
-                dbc.Button('Spend', id='spend-button', style={ 'margin-bottom': '7px'}, color='secondary'),
+dbc.Select(
+                    id="category",
+                    options=[
+                        {"label": "Bills", "value": "bills"},
+                        {"label": "Tuition fees", "value": "tuition fees"},
+                        {"label": "Books", "value": "books"},
+                    ], style={'margin-bottom': '7px'}
+                ),
+                dbc.Button('Save', id='save-button', style={'margin-bottom': '7px', 'margin-right': '4px'},
+                           color='secondary'),
+                dbc.Button('Spend', id='spend-button', style={'margin-bottom': '7px'}, color='secondary'),
             ], ),
         ], className="d-flex justify-content-center align-items-center"
     ),
@@ -54,8 +65,16 @@ class FinanceView:
                 html.Button('Logout', id='logout-button', style={'margin-left': '15px', 'margin-bottom': '10px'}),
             ], style={'display': 'flex'}),
             dbc.Row(
-                dbc.Col(card, width=4, style={ 'margin-left': '15px'}),
-            ),
+                [dbc.Col(card, width=4, style={'margin-left': '15px'}),
+                 dbc.Col(
+                     dag.AgGrid(
+                         id='transaction-table',
+                         rowData=(model_cfg.get_data_df()).to_dict('records'),
+                         className='ag-theme-alpine-dark',
+                         columnDefs=[{"field": i} for i in (model_cfg.get_data_df()).columns],
+                     )
+                 ),
+                 ]),
         ]),
         ])
 
