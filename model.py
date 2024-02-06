@@ -4,6 +4,14 @@ class model:
     def __init__(self, db_name='finance.db'):
         self.db_name = db_name
 
+    def connect_to_data_db(self, amount, method):
+        conn = sqlite3.connect('dash.db')
+        c = conn.cursor()
+        c.execute("INSERT OR IGNORE INTO transactions (amount, method) VALUES (?, ?)", (amount, method))
+        print('saved data into table')
+        conn.commit()
+
+
     def get_data(self):
         items = []
         conn = sqlite3.connect(self.db_name)
@@ -30,19 +38,21 @@ class model:
         print('balance:', balance)
         return f"{balance:.2f}"
 
-    def update_balance(self, current, new_val):
+    def update_balance(self, current, new_val, selected_method):
         conn = sqlite3.connect('dash.db')
         c = conn.cursor()
         new_balance = float(new_val) + float(current)
+        self.connect_to_data_db(new_val, selected_method)
         print('balance saving into db')
         c.execute('UPDATE wallet SET balance = balance + ? WHERE id = 1', (new_val,))
         conn.commit()
         return f"{new_balance:.2f}"
 
-    def spend_balance(self, current, new_val):
+    def spend_balance(self, current, new_val, selected_method):
         conn = sqlite3.connect('dash.db')
         c = conn.cursor()
         new_balance = float(current) - float(new_val)
+        self.connect_to_data_db(new_val, selected_method)
         print(new_balance)
         print('balance saving into db')
         c.execute('UPDATE wallet SET balance = balance - ? WHERE id = 1', (new_val,))

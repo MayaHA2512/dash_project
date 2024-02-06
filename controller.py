@@ -7,7 +7,8 @@ import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 
 server = Flask(__name__)
-app = dash.Dash(__name__, server=server, url_base_pathname='/', suppress_callback_exceptions=True, external_stylesheets=[dbc.themes.DARKLY])
+app = dash.Dash(__name__, server=server, url_base_pathname='/', suppress_callback_exceptions=True,
+                external_stylesheets=[dbc.themes.DARKLY])
 model = model()
 
 app.layout = html.Div([
@@ -15,6 +16,7 @@ app.layout = html.Div([
     FinanceView().navbar(),
     html.Div(id='page-content')
 ])
+
 
 @app.callback(
     Output('page-content', 'children'),
@@ -29,13 +31,12 @@ def display_page(pathname):
 
 
 @app.callback(
-    [Output('url', 'pathname',allow_duplicate=True),
+    [Output('url', 'pathname', allow_duplicate=True),
      Output('login-output', 'children')],
     [Input('login-button', 'n_clicks')],
     [State('username-input', 'value'),
      State('password-input', 'value')],
-prevent_initial_call=True
-
+    prevent_initial_call=True
 
 )
 def login_auth(n_clicks, username, password):
@@ -48,35 +49,32 @@ def login_auth(n_clicks, username, password):
 @app.callback(
     Output('balance', 'children'),
     [Input('save-button', 'n_clicks'),
-     Input('spend-button', 'n_clicks'),],
+     Input('spend-button', 'n_clicks'), ],
     [State('input-box', 'value'),
+     State('select', 'value'),
      State('balance', 'children')],
-prevent_initial_call=True
+    prevent_initial_call=True
 )
-def update_output(save_clicks, spend_clicks, user_input, current_val):
+def update_output(save_clicks, spend_clicks, user_input, selected_val, current_val):
     print('inputs', save_clicks, spend_clicks, user_input, current_val)
     button_clicked = dash.ctx.triggered_id
     if button_clicked == 'save-button':
-        new_balance = model.update_balance(current=current_val, new_val=user_input)
+        new_balance = model.update_balance(current=current_val, new_val=user_input, selected_method=selected_val)
         print('save button balance', new_balance)
         return new_balance
     elif button_clicked == 'spend-button':
-        new_balance = model.spend_balance(current=current_val, new_val=user_input)
+        new_balance = model.spend_balance(current=current_val, new_val=user_input, selected_method=selected_val)
         return new_balance
-
-
-
 
 
 @app.callback(
     Output('url', 'pathname', allow_duplicate=True),
     [Input('logout-button', 'n_clicks')],
-prevent_initial_call=True
+    prevent_initial_call=True
 
 )
 def logout(n_clicks):
     return '/login' if n_clicks else dash.no_update
-
 
 
 if __name__ == '__main__':

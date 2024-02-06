@@ -4,23 +4,26 @@ import dash_bootstrap_components as dbc
 from model import model
 
 model_cfg = model()
+
 g = 1
 card_content = [
     dbc.CardHeader("Add transaction"),
     dbc.CardBody(
         [
-            html.P(
-                "This is some card content that we'll reuse",
-                className="card-text",
-            ),
             html.Div([
-                dcc.Input(id='input-box', type='text', style={'margin-left': '7px', 'margin-bottom': '10px'}),
-                dcc.Dropdown(['Cash', 'Credit', 'Debit'], 'Spending method', id='demo-dropdown',
-                             style={'border-radius': '0px', 'margin-left': '3px', 'width': '200px', 'margin-bottom': '10px'}),
-                html.Button('Save', id='save-button', style={'margin-left': '7px', 'margin-bottom': '10px'}),
-                html.Button('Spend', id='spend-button', style={'margin-left': '7px', 'margin-bottom': '10px'}),
+                dbc.Input(id='input-box', type='text', style={ 'margin-bottom': '10px'}),
+                dbc.Select(
+                    id="select",
+                    options=[
+                        {"label": "Cash", "value": "cash"},
+                        {"label": "Credit Card", "value": "credit"},
+                        {"label": "Debit Card", "value": "debit"},
+                    ],style={'margin-bottom': '7px'}
+                ),
+                dbc.Button('Save', id='save-button', style={'margin-bottom': '7px', 'margin-right': '4px'}, color='secondary'),
+                dbc.Button('Spend', id='spend-button', style={ 'margin-bottom': '7px'}, color='secondary'),
             ], ),
-        ]
+        ], className="d-flex justify-content-center align-items-center"
     ),
 ]
 card = dbc.Card(card_content, color="dark", inverse=True)
@@ -51,7 +54,7 @@ class FinanceView:
                 html.Button('Logout', id='logout-button', style={'margin-left': '15px', 'margin-bottom': '10px'}),
             ], style={'display': 'flex'}),
             dbc.Row(
-                dbc.Col(card, width=4, style={'border-radius': '0px', 'margin-left': '15px'}),
+                dbc.Col(card, width=4, style={ 'margin-left': '15px'}),
             ),
         ]),
         ])
