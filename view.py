@@ -7,6 +7,7 @@ import plotly.express as px
 
 model_cfg = model()
 
+
 # df = model_cfg.get_data_df()
 # pie_chart = px.pie(df, values='amount', names='category')
 # pie_chart = pie_chart.update_layout(paper_bgcolor='rgba(0,0,0,0)', )
@@ -21,9 +22,9 @@ class FinanceView:
         df = model_cfg.get_data_df()
         pie_chart = px.pie(df, values='amount', names='category', width=350, height=350)
         pie_chart = pie_chart.update_traces(textfont=dict(color='white'))
-        pie_chart = pie_chart.update_layout(paper_bgcolor='rgba(0,0,0,0)', margin=dict(t=0, b=0, l=0, r=0),legend=dict(font=dict(color='white')))
+        pie_chart = pie_chart.update_layout(paper_bgcolor='rgba(0,0,0,0)', margin=dict(t=0, b=0, l=0, r=0),
+                                            legend=dict(font=dict(color='white')))
         return pie_chart
-
 
     @staticmethod
     def card():
@@ -66,8 +67,8 @@ class FinanceView:
             dbc.CardHeader("Spending:"),
             dbc.CardBody(
                 [
-                    dcc.Graph(id='pie_chart', figure=FinanceView.pie_chart(),)
-                ], className= "d-flex justify-content-center align-items-center"
+                    dcc.Graph(id='pie_chart', figure=FinanceView.pie_chart(), )
+                ], className="d-flex justify-content-center align-items-center"
             ),
         ]
         card = dbc.Card(card_content, color="dark", inverse=True, style={'height': '400px'})
@@ -103,21 +104,51 @@ class FinanceView:
             dbc.Row(
                 [dbc.Col([card, FinanceView.pie_chart_card()], width=4,
                          style={'margin-left': '15px'}),
-                 dbc.Col(
+                 dbc.Col([
                      dag.AgGrid(
                          id='transaction-table',
                          rowData=(model_cfg.get_data_df()).to_dict('records'),
                          className='ag-theme-alpine-dark',
                          columnDefs=[{"field": i} for i in (model_cfg.get_data_df()).columns],
-                     )
+                         style={'height': '720px'}
+                     ),
+
+                 ]
                  ),
                  ]),
+            dbc.Row([
+                dbc.Col([
+                    dbc.Container('budgets', id='budget-container', ),
+                ], style={'margin-top': '10px'}),
+
+            ])
+        ])
 
         ]),
-        ]),
+
+    def budget_layout(self):
+        layout = html.Div([])
+        return html.Div([
+            html.H4('Budgets page', style={'padding': '15px'}),
+            dbc.Input(id='username-input', placeholder='Enter your username', type='text',
+                      style={'margin-left': '15px', 'margin-bottom': '10px'}),
+            ])
 
     def navbar(self):
         navbar = dbc.NavbarSimple(
+            children=[
+                dbc.DropdownMenu(
+                    id='menu-dropdown',
+                    children=[
+                        dbc.DropdownMenuItem("More pages", header=True),
+                        dbc.DropdownMenuItem("Dashboard", href="/"),
+                        dbc.DropdownMenuItem("Budgets", href="/budgets"),
+                    ],
+                    nav=True,
+                    in_navbar=True,
+                    label="Pages",
+                ),
+            ],
             brand='Student Finance Tracker',
             brand_href='/',
             color='secondary',

@@ -5,6 +5,7 @@ from view import FinanceView
 import dash
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
+import dash_ag_grid as dag
 
 server = Flask(__name__)
 app = dash.Dash(__name__, server=server, url_base_pathname='/', suppress_callback_exceptions=True,
@@ -29,6 +30,8 @@ def display_page(pathname):
         return FinanceView.success_layout(database_items)
     elif pathname == '/login':
         return FinanceView.login_layout()
+    elif pathname == '/budgets':
+        return FinanceView().budget_layout()
 
 
 @app.callback(
