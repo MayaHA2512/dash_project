@@ -19,8 +19,9 @@ class FinanceView:
     @staticmethod
     def pie_chart():
         df = model_cfg.get_data_df()
-        pie_chart = px.pie(df, values='amount', names='category')
-        pie_chart = pie_chart.update_layout(paper_bgcolor='rgba(0,0,0,0)', )
+        pie_chart = px.pie(df, values='amount', names='category', width=350, height=350)
+        pie_chart = pie_chart.update_traces(textfont=dict(color='white'))
+        pie_chart = pie_chart.update_layout(paper_bgcolor='rgba(0,0,0,0)', margin=dict(t=0, b=0, l=0, r=0),legend=dict(font=dict(color='white')))
         return pie_chart
 
 
@@ -56,7 +57,20 @@ class FinanceView:
                 ], className="d-flex justify-content-center align-items-center"
             ),
         ]
-        card = dbc.Card(card_content, color="dark", inverse=True)
+        card = dbc.Card(card_content, color="dark", inverse=True, style={'margin-bottom': '15px'})
+        return card
+
+    @staticmethod
+    def pie_chart_card():
+        card_content = [
+            dbc.CardHeader("Spending:"),
+            dbc.CardBody(
+                [
+                    dcc.Graph(id='pie_chart', figure=FinanceView.pie_chart(),)
+                ], className= "d-flex justify-content-center align-items-center"
+            ),
+        ]
+        card = dbc.Card(card_content, color="dark", inverse=True, style={'height': '400px'})
         return card
 
     @staticmethod
@@ -87,7 +101,7 @@ class FinanceView:
                            color='secondary'),
             ], style={'display': 'flex'}),
             dbc.Row(
-                [dbc.Col([card, dcc.Graph(id='pie_chart', figure=FinanceView.pie_chart(), )], width=4,
+                [dbc.Col([card, FinanceView.pie_chart_card()], width=4,
                          style={'margin-left': '15px'}),
                  dbc.Col(
                      dag.AgGrid(
