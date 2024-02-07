@@ -7,47 +7,22 @@ import plotly.express as px
 
 model_cfg = model()
 
-g = 1
-# card_content = [
-#     dbc.CardHeader("Add transaction"),
-#     dbc.CardBody(
-#         [
-#             html.Div([
-#                 dbc.Input(id='description-box', type='text', style={'margin-bottom': '10px'}),
-#                 dbc.Input(id='input-box', type='text', style={'margin-bottom': '10px'}),
-#                 dbc.Select(
-#                     id="select",
-#                     options=[
-#                         {"label": "Cash", "value": "cash"},
-#                         {"label": "Credit Card", "value": "credit"},
-#                         {"label": "Debit Card", "value": "debit"},
-#                     ], style={'margin-bottom': '7px'}
-#                 ),
-# dbc.Select(
-#                     id="category",
-#                     options=[
-#                         {"label": "Bills", "value": "bills"},
-#                         {"label": "Tuition fees", "value": "tuition fees"},
-#                         {"label": "Books", "value": "books"},
-#                     ], style={'margin-bottom': '7px'}
-#                 ),
-#                 dbc.Button('Save', id='save-button', style={'margin-bottom': '7px', 'margin-right': '4px'},
-#                            color='secondary'),
-#                 dbc.Button('Spend', id='spend-button', style={'margin-bottom': '7px'}, color='secondary'),
-#             ], ),
-#         ], className="d-flex justify-content-center align-items-center"
-#     ),
-# ]
-# card = dbc.Card(card_content, color="dark", inverse=True)
-
-df = model_cfg.get_data_df()
-pie_chart = px.pie(df, values='amount', names='category')
-pie_chart = pie_chart.update_layout(paper_bgcolor='rgba(0,0,0,0)', )
-
+# df = model_cfg.get_data_df()
+# pie_chart = px.pie(df, values='amount', names='category')
+# pie_chart = pie_chart.update_layout(paper_bgcolor='rgba(0,0,0,0)', )
+#
 
 class FinanceView:
     def __init__(self):
         pass
+
+    @staticmethod
+    def pie_chart():
+        df = model_cfg.get_data_df()
+        pie_chart = px.pie(df, values='amount', names='category')
+        pie_chart = pie_chart.update_layout(paper_bgcolor='rgba(0,0,0,0)', )
+        return pie_chart
+
 
     @staticmethod
     def card():
@@ -108,9 +83,11 @@ class FinanceView:
                 html.H4(model_cfg.get_balance(), id='balance', style={'margin-left': '0px'}),
                 dbc.Button('Logout', id='logout-button', style={'margin-left': '15px', 'margin-bottom': '10px'},
                            color='secondary'),
+                dbc.Button('Refresh', id='refresh-button', style={'margin-left': '15px', 'margin-bottom': '10px'},
+                           color='secondary'),
             ], style={'display': 'flex'}),
             dbc.Row(
-                [dbc.Col([card, dcc.Graph(id='pie_chart', figure=pie_chart, )], width=4,
+                [dbc.Col([card, dcc.Graph(id='pie_chart', figure=FinanceView.pie_chart(), )], width=4,
                          style={'margin-left': '15px'}),
                  dbc.Col(
                      dag.AgGrid(

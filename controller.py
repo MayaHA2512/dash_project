@@ -5,11 +5,13 @@ from view import FinanceView
 import dash
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
+import dash_ag_grid as dag
 
 server = Flask(__name__)
 app = dash.Dash(__name__, server=server, url_base_pathname='/', suppress_callback_exceptions=True,
                 external_stylesheets=[dbc.themes.DARKLY])
 model = model()
+_view = FinanceView()
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
@@ -78,6 +80,19 @@ def update_output(save_clicks, spend_clicks, user_input, selected_val, category,
 def logout(n_clicks):
     return '/login' if n_clicks else dash.no_update
 
+
+@app.callback(
+
+    Output('transaction-table', 'rowData'),
+Output('pie_chart', 'figure'),
+    [Input('refresh-button', 'n_clicks')],
+    prevent_initial_call = True
+)
+def update(n_clicks):
+    if n_clicks is not None:
+        pie_chart = _view.pie_chart()
+        table_data = model.get_data_df().to_dict('records')
+        return  table_data, pie_chart
 
 if __name__ == '__main__':
     app.run_server(debug=True)
