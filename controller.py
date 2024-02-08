@@ -65,11 +65,13 @@ def update_output(save_clicks, spend_clicks, user_input, selected_val, category,
     print('inputs', save_clicks, spend_clicks, user_input, current_val)
     button_clicked = dash.ctx.triggered_id
     if button_clicked == 'save-button':
-        new_balance = model.update_balance(current=current_val, new_val=user_input, selected_method=selected_val, category=category, description=description)
+        new_balance = model.update_balance(current=current_val, new_val=user_input, selected_method=selected_val,
+                                           category=category, description=description)
         print('save button balance', new_balance)
         return new_balance
     elif button_clicked == 'spend-button':
-        new_balance = model.spend_balance(current=current_val, new_val=user_input, selected_method=selected_val, category=category, description=description)
+        new_balance = model.spend_balance(current=current_val, new_val=user_input, selected_method=selected_val,
+                                          category=category, description=description)
         return new_balance
 
 
@@ -86,15 +88,32 @@ def logout(n_clicks):
 @app.callback(
 
     Output('transaction-table', 'rowData'),
-Output('pie_chart', 'figure'),
+    Output('pie_chart', 'figure'),
     [Input('refresh-button', 'n_clicks')],
-    prevent_initial_call = True
+    prevent_initial_call=True
 )
 def update(n_clicks):
     if n_clicks is not None:
         pie_chart = _view.pie_chart()
         table_data = model.get_data_df().to_dict('records')
-        return  table_data, pie_chart
+        return table_data, pie_chart
+
+
+@app.callback(
+    Output('budgets', 'children', allow_duplicate=True),
+    [Input('add-button', 'n_clicks')],
+    State('budget-category-dropdown', 'value'),
+    State('budget-input', 'value'),
+    State('budgets', 'children'),
+    prevent_initial_call=True
+
+)
+def update(n_clicks, cat_chosen, user_input, budgets_list):
+    print(n_clicks, user_input, cat_chosen, budgets_list)
+    new_card = _view.budget_card_maker(user_input, cat_chosen)
+    budgets_list.append(new_card)
+    return budgets_list
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)

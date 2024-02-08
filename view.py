@@ -33,15 +33,16 @@ class FinanceView:
             dbc.CardBody(
                 [
                     html.Div([
-                        dbc.Input(id='description-box', type='text', style={'margin-bottom': '10px'}),
-                        dbc.Input(id='input-box', type='text', style={'margin-bottom': '10px'}),
+                        dbc.Input(id='description-box', type='text', style={'margin-bottom': '10px'}, placeholder='Description'),
+                        dbc.Input(id='input-box', type='text', style={'margin-bottom': '10px'}, placeholder='Amount'),
                         dbc.Select(
                             id="select",
                             options=[
                                 {"label": "Cash", "value": "cash"},
                                 {"label": "Credit Card", "value": "credit"},
                                 {"label": "Debit Card", "value": "debit"},
-                            ], style={'margin-bottom': '7px'}
+                            ], style={'margin-bottom': '7px'},
+                            placeholder='Payment method',
                         ),
                         dbc.Select(
                             id="category",
@@ -49,7 +50,8 @@ class FinanceView:
                                 {"label": "Bills", "value": "bills"},
                                 {"label": "Tuition fees", "value": "tuition fees"},
                                 {"label": "Books", "value": "books"},
-                            ], style={'margin-bottom': '7px'}
+                            ], style={'margin-bottom': '7px'},
+                            placeholder='Category',
                         ),
                         dbc.Button('Save', id='save-button', style={'margin-bottom': '7px', 'margin-right': '4px'},
                                    color='secondary'),
@@ -73,6 +75,20 @@ class FinanceView:
         ]
         card = dbc.Card(card_content, color="dark", inverse=True, style={'height': '400px'})
         return card
+
+    @staticmethod
+    def budget_card_maker(amount, category):
+        card_content = [
+            dbc.CardHeader("%s" % category),
+            dbc.CardBody(
+                [
+                    html.H4('card for %s with amount: %s' % (category, amount))
+                ], className="d-flex justify-content-center align-items-center"
+            ),
+        ]
+        card = dbc.Card(card_content, color="dark", inverse=True, style={'height': '400px'})
+        return card
+
 
     @staticmethod
     def login_layout():
@@ -116,23 +132,44 @@ class FinanceView:
                  ]
                  ),
                  ]),
-            dbc.Row([
-                dbc.Col([
-                    dbc.Container('budgets', id='budget-container', ),
-                ], style={'margin-top': '10px'}),
-
-            ])
         ])
 
         ]),
 
     def budget_layout(self):
-        layout = html.Div([])
-        return html.Div([
-            html.H4('Budgets page', style={'padding': '15px'}),
-            dbc.Input(id='username-input', placeholder='Enter your username', type='text',
-                      style={'margin-left': '15px', 'margin-bottom': '10px'}),
+        card_content = [
+            dbc.CardHeader("Add Budget"),
+            dbc.CardBody(
+                [
+                    dbc.Input(id='budget-input', placeholder='Budget', type='text',
+                              ),
+                    dbc.Select(
+                        id="budget-category-dropdown",
+                        style={'margin-bottom': '7px'},
+                        options=[
+                            {"label": "Bills", "value": "bills"},
+                            {"label": "Tuition fees", "value": "tuition fees"},
+                            {"label": "Books", "value": "books"},
+                        ],
+                    ),
+                    dbc.Button('Add', id='add-button', style={'margin-left': '15px', 'margin-bottom': '10px'},
+                               color='secondary'),
+                ], className="d-flex justify-content-center align-items-center"
+            ),
+        ]
+        card = dbc.Card(card_content, color="dark", inverse=True, style={'height': '400px'})
+        return dbc.Container([  # Use dbc.Container to wrap the row for proper alignment and padding
+            dbc.Row([  # Wrap the columns in a dbc.Row to layout them horizontally
+                dbc.Col([
+                    html.H4('Budgets page', style={'padding': '15px'}),
+                    card
+                ], width=6),
+                dbc.Col([
+                    html.H4('Budgets'),
+                    dbc.Container(id='budgets', children=[])
+                ], width=6)
             ])
+        ], fluid=True)
 
     def navbar(self):
         navbar = dbc.NavbarSimple(
