@@ -78,12 +78,16 @@ class FinanceView:
 
     @staticmethod
     def budget_card_maker(amount, category):
+        data = model_cfg.get_data_for_budget(category=category)
+        total = sum(data)
+        percentage_used = round(((total/int(amount)) * 1e2), 2)
         card_content = [
             dbc.CardHeader("%s" % category),
             dbc.CardBody(
                 [
-                    html.H4('card for %s with amount: %s' % (category, amount))
-                ], className="d-flex justify-content-center align-items-center"
+                    dbc.Progress(label='{}% used'.format(percentage_used), value=percentage_used, color="primary", className="my-2", style={"height": "30px", "width": "100%"}),
+                ], className="d-flex justify-content-center align-items-center",
+                style={"height": "100px"}
             ),
         ]
         card = dbc.Card(card_content, color="dark", inverse=True, style={'height': '400px'})

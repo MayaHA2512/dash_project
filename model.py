@@ -70,5 +70,11 @@ class model:
         conn.close()
         return df
 
+    def get_data_for_budget(self, category):
+        data = self.get_data_df()
+        filtered_data = data[data['category'] == category]
+        return (filtered_data['amount']).to_list()
+
+
 # logic to calculate and save to db
 # create connect to db fn
