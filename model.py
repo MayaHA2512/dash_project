@@ -1,6 +1,7 @@
 import sqlite3
 import datetime
 import pandas as pd
+import dash_bootstrap_components as dbc
 
 class model:
     def __init__(self, db_name='finance.db'):
@@ -75,6 +76,45 @@ class model:
         filtered_data = data[data['category'] == category]
         return (filtered_data['amount']).to_list()
 
+    def budget_card_maker(self, category, percentage):
+        card_content = [
+            dbc.CardHeader("%s" % category),
+            dbc.CardBody(
+                [
+                    dbc.Progress(label='{}% used'.format(percentage), value=percentage, color="primary",
+                                 className="my-2", style={"height": "30px", "width": "100%"}),
+                ], className="d-flex justify-content-center align-items-center",
+                style={"height": "100px"}
+            ),
+        ]
+        card = dbc.Card(card_content, color="dark", inverse=True, style={'height': '200px'})
+        return card
+
+    def get_budget_cards_df_from_db(self):
+        cards = []
+        conn = sqlite3.connect('dash.db')
+        query = 'SELECT * FROM budget_table'
+        df = pd.read_sql_query(query, conn)
+        conn.close()
+        for index, row in df.iterrows():
+            category, percentage = row['category'], row['percentage']
+            card = self.budget_card_maker(category, percentage)
+            cards.append(card)
+        return cards
+
+    def publish_budget_to_db(self, category, user_input):
+        data = model().get_data_for_budget(category=category)
+        total = sum(data)
+        percentage_used = round(((total / int(user_input)) * 1e2), 2)
+        conn = sqlite3.connect('dash.db')
+        c = conn.cursor()
+        c.execute("INSERT OR IGNORE INTO budget_table (category, percentage) VALUES (?, ?)", (category, percentage_used))
+        conn.commit()
+        conn.close()
+
+
 
 # logic to calculate and save to db
 # create connect to db fn
+cls = model()
+cls.get_budget_cards_df_from_db()

@@ -1,71 +1,65 @@
-# import sqlite3
-# #
-# #
-# conn = sqlite3.connect('dash.db')
-# c = conn.cursor()
-# #
-# # # Create table if it doesn't exist
-# c.execute('''
-#     CREATE TABLE IF NOT EXISTS transactions_tbl (
-#         id INTEGER PRIMARY KEY AUTOINCREMENT,
-#         description TEXT,
-#         category TEXT,
-#         amount INTEGER,
-#         method TEXT,
-#         type TEXT
-#     )
-# ''')
+import sqlite3
 #
-# # # Initialize 'students' row if it doesn't exist
-# # c.execute("INSERT OR IGNORE INTO transactions_tbl (description, category, amount, method, type) VALUES ('Shopping Spree', 'leisure',  30, 'card', 'IN')")
-# #
-# # "INSERT OR IGNORE INTO transactions_tbl (description, category, amount, method, type) VALUES ('Shopping Spree', 'leisure',  30, 'card', 'IN')"
-# # conn.commit()
-# # conn.close()
 #
-# #
-# # # Fetch all rows from the query
-# # c.execute('DELETE FROM transactions WHERE id = 17')
-# # rows = c.fetchall()
-# #
-# # # Iterate over the rows and print them
-# # for row in rows:
-# #     print(row)
-# #
-# # # Close the cursor and the connection
-# # c.close()
-# # conn.close()
+conn = sqlite3.connect('dash.db')
+c = conn.cursor()
 #
-# import sqlite3
+# # Create table if it doesn't exist
+
+def create_tbl():
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS budget_table (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            category TEXT,
+            percentage REAL
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+
+def delete_data():
+    conn = sqlite3.connect('dash.db')
+    c = conn.cursor()
+
+    # Delete all data from the budget_table
+    c.execute('DELETE FROM budget_table;')
+
+    # Optionally, reset the autoincrement counter for budget_table
+    # This step is only necessary if you want to reset the ID counter
+    c.execute('DELETE FROM sqlite_sequence WHERE name="budget_table";')
+
+    # Commit the changes and close the connection
+    conn.commit()
+    conn.close()
+
+
 #
-# # Connect to the database (or create it if it doesn't exist)
-# conn = sqlite3.connect('example.db')
-#
-# # Create a cursor object
-# cur = conn.cursor()
-#
-# # SQL command to add a new column
-# # Replace 'table_name' with your table's name
-# # Replace 'new_column_name' with your new column's name
-# # Replace 'column_type' with your new column's type (e.g., TEXT, INTEGER, etc.)
-# c.execute('ALTER TABLE transactions_tbl ADD COLUMN date TEXT')
-#
-# # Commit the changes
-# conn.commit()
-#
-# # Close the connection
-# RESET THE DISPLAYED BALANCE
+
+def get_data():
+    c.execute('SELECT * FROM budget_table')
+    rows = c.fetchall()
+    for row in rows:
+        print(row)
 
 # import sqlite3
-#
-# conn = sqlite3.connect('dash.db')
-# c = conn.cursor()
-# c.execute('UPDATE wallet SET balance =  ? WHERE id = 1', (327.50,))
-# conn.commit()
-# conn.close()
+def add_col():
+    conn = sqlite3.connect('example.db')
+    cur = conn.cursor()
+    cur.execute('ALTER TABLE transactions_tbl ADD COLUMN date TEXT')
+    conn.commit()
 
-import plotly.express as px
-# This dataframe has 244 lines, but 4 distinct values for `day`
-df = px.data.tips()
-fig = px.pie(df, values='tip', names='day')
-fig.show()
+
+def update_val():
+    conn = sqlite3.connect('dash.db')
+    c = conn.cursor()
+    c.execute('UPDATE wallet SET balance =  ? WHERE id = 1', (327.50,))
+    conn.commit()
+    conn.close()
+
+def add_row():
+    c.execute("INSERT OR IGNORE INTO budget_table (category, percentage) VALUES (?, ?)", ('books', 34.43))
+    conn.commit()
+    conn.close()
+
+get_data()

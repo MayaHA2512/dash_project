@@ -90,7 +90,7 @@ class FinanceView:
                 style={"height": "100px"}
             ),
         ]
-        card = dbc.Card(card_content, color="dark", inverse=True, style={'height': '400px'})
+        card = dbc.Card(card_content, color="dark", inverse=True, style={'height': '200px'})
         return card
 
 
@@ -165,12 +165,10 @@ class FinanceView:
         return dbc.Container([  # Use dbc.Container to wrap the row for proper alignment and padding
             dbc.Row([  # Wrap the columns in a dbc.Row to layout them horizontally
                 dbc.Col([
-                    html.H4('Budgets page', style={'padding': '15px'}),
                     card
                 ], width=6),
                 dbc.Col([
-                    html.H4('Budgets'),
-                    dbc.Container(id='budgets', children=[])
+                    dbc.Container(id='budgets', children=[item for item in model_cfg.get_budget_cards_df_from_db()])
                 ], width=6)
             ])
         ], fluid=True)

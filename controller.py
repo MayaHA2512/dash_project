@@ -110,6 +110,7 @@ def update(n_clicks):
 )
 def update(n_clicks, cat_chosen, user_input, budgets_list):
     print(n_clicks, user_input, cat_chosen, budgets_list)
+    model.publish_budget_to_db(category=cat_chosen, user_input=user_input)
     new_card = _view.budget_card_maker(user_input, cat_chosen)
     budgets_list.append(new_card)
     return budgets_list
