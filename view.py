@@ -4,6 +4,7 @@ import dash_bootstrap_components as dbc
 from model import model
 import dash_ag_grid as dag
 import plotly.express as px
+import pandas as pd
 
 model_cfg = model()
 
@@ -99,10 +100,10 @@ class FinanceView:
         return html.Div([
             html.H4('Please Log In', style={'padding': '15px'}),
             dbc.Input(id='username-input', placeholder='Enter your username', type='text',
-                      style={'margin-left': '15px', 'margin-bottom': '10px'}),
+                      style={'margin-left': '15px', 'margin-bottom': '10px', 'width': '300px'}),
             html.Br(),
             dbc.Input(id='password-input', placeholder='Enter your password', type='password',
-                      style={'margin-left': '15px', 'margin-bottom': '10px'}),
+                      style={'margin-left': '15px', 'margin-bottom': '10px', 'width': '300px'}),
             html.Br(),
             dbc.Button('Login', id='login-button', style={'margin-left': '15px', 'margin-bottom': '10px'},
                        color='secondary'),
@@ -121,6 +122,21 @@ class FinanceView:
                 dbc.Button('Refresh', id='refresh-button', style={'margin-left': '15px', 'margin-bottom': '10px'},
                            color='secondary'),
             ], style={'display': 'flex'}),
+        dbc.Alert(
+            "Transaction added successfully!",
+            id="alert-auto",
+            is_open=False,
+            duration=4000,
+            style={'border-radius': '4px'}
+        ),
+            dbc.Alert(
+                "Error whilst adding transactions, check details and try again",
+                id="alert",
+                is_open=False,
+                duration=4000,
+                color='danger',
+                style={'border-radius': '4px'}
+            ),
             dbc.Row(
                 [dbc.Col([card, FinanceView.pie_chart_card()], width=4,
                          style={'margin-left': '15px'}),
@@ -141,31 +157,10 @@ class FinanceView:
         ]),
 
     def budget_layout(self):
-        card_content = [
-            dbc.CardHeader("Add Budget"),
-            dbc.CardBody(
-                [
-                    dbc.Input(id='budget-input', placeholder='Budget', type='text',
-                              ),
-                    dbc.Select(
-                        id="budget-category-dropdown",
-                        style={'margin-bottom': '7px'},
-                        options=[
-                            {"label": "Bills", "value": "bills"},
-                            {"label": "Tuition fees", "value": "tuition fees"},
-                            {"label": "Books", "value": "books"},
-                        ],
-                    ),
-                    dbc.Button('Add', id='add-button', style={'margin-left': '15px', 'margin-bottom': '10px'},
-                               color='secondary'),
-                ], className="d-flex justify-content-center align-items-center"
-            ),
-        ]
-        card = dbc.Card(card_content, color="dark", inverse=True, style={'height': '400px'})
+
         return dbc.Container([  # Use dbc.Container to wrap the row for proper alignment and padding
             dbc.Row([  # Wrap the columns in a dbc.Row to layout them horizontally
                 dbc.Col([
-                    card
                 ], width=6),
                 dbc.Col([
                     dbc.Container(id='budgets', children=[item for item in model_cfg.get_budget_cards_df_from_db()])

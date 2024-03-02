@@ -45,12 +45,14 @@ def display_page(pathname):
 )
 def login_auth(n_clicks, username, password):
     if username == 'admin' and password == 'admin':
-        return '/', f'Login Successful {username}'
+        return '/', ''
     else:
-        return dash.no_update, 'Incorrect username or password'
+        return dash.no_update, ''
 
 
 @app.callback(
+    Output("alert", "is_open"),
+    Output("alert-auto", "is_open"),
     Output('balance', 'children'),
     [Input('save-button', 'n_clicks'),
      Input('spend-button', 'n_clicks'), ],
@@ -58,21 +60,42 @@ def login_auth(n_clicks, username, password):
      State('select', 'value'),
      State('category', 'value'),
      State('description-box', 'value'),
-     State('balance', 'children')],
+     State('balance', 'children'),
+     State("alert-auto", "is_open"),
+     State("alert", "is_open")
+     ],
     prevent_initial_call=True
 )
-def update_output(save_clicks, spend_clicks, user_input, selected_val, category, description, current_val):
+def update_output(save_clicks, spend_clicks, user_input, selected_val, category, description, current_val,
+                  success_isopen, alert_isopen):
     print('inputs', save_clicks, spend_clicks, user_input, current_val)
     button_clicked = dash.ctx.triggered_id
     if button_clicked == 'save-button':
-        new_balance = model.update_balance(current=current_val, new_val=user_input, selected_method=selected_val,
-                                           category=category, description=description)
-        print('save button balance', new_balance)
-        return new_balance
+        try:
+            val = int(user_input)
+            if type(description) == str and val > 0:
+                new_balance = model.update_balance(current=current_val, new_val=user_input,
+                                                   selected_method=selected_val,
+                                                   category=category, description=description)
+                print('save button balance', new_balance)
+                return  alert_isopen, not success_isopen, new_balance
+        except ValueError:
+            print("That's not an int!")
+            return current_val, success_isopen, not alert_isopen
+
     elif button_clicked == 'spend-button':
-        new_balance = model.spend_balance(current=current_val, new_val=user_input, selected_method=selected_val,
-                                          category=category, description=description)
-        return new_balance
+        try:
+            val = int(user_input)
+            if type(description) == str and val > 0:
+                new_balance = model.update_balance(current=current_val, new_val=user_input,
+                                                   selected_method=selected_val,
+                                                   category=category, description=description)
+                print('save button balance', new_balance)
+                return alert_isopen, not success_isopen, new_balance
+        except ValueError:
+            print("That's not an int!")
+            return current_val, success_isopen, not alert_isopen
+
 
 
 @app.callback(
@@ -117,4 +140,4 @@ def update(n_clicks, cat_chosen, user_input, budgets_list):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=True, port=8000)

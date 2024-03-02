@@ -2,10 +2,14 @@ import sqlite3
 import datetime
 import pandas as pd
 import dash_bootstrap_components as dbc
+import requests
 
 class model:
     def __init__(self, db_name='finance.db'):
         self.db_name = db_name
+
+
+
 
     def connect_to_data_db(self, description, category, amount, method, type):
         current_datetime = datetime.datetime.now()
@@ -114,7 +118,3 @@ class model:
 
 
 
-# logic to calculate and save to db
-# create connect to db fn
-cls = model()
-cls.get_budget_cards_df_from_db()
