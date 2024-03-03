@@ -127,10 +127,17 @@ accessed.
 As you can see this function is reused up to 5 times throughout the project which has dramatically reduced the volume of 
 repetitive code
 
+I have also started putting together a config class as to have a central place for things such as categories and payment methods
+that can be viewed from the dropdown in the dashboard:
+![dashb.png](..%2Fimages%2Fdashb.png)
+This has helped majorly in getting cleaner code as shown in the before and after code below:
 
+**Before:**
 
-IMPLEMENTATION 
+![old_options.png](..%2Fimages%2Fold_options.png)
 
+**After:**
+![options_new.png](..%2Fimages%2Foptions_new.png)
 TESTING 
 
 REVIEW

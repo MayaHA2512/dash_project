@@ -5,9 +5,10 @@ from MVC.model import model
 import dash_ag_grid as dag
 import plotly.express as px
 from components.card import Card
+from setup.config import Config
 
 model_cfg = model()
-
+config = Config()
 
 class FinanceView:
     def __init__(self):
@@ -42,11 +43,7 @@ class FinanceView:
                         ),
                         dbc.Select(
                             id="category",
-                            options=[
-                                {"label": "Bills", "value": "bills"},
-                                {"label": "Tuition fees", "value": "tuition fees"},
-                                {"label": "Books", "value": "books"},
-                            ], style={'margin-bottom': '7px'},
+                            options=[{'label': val, 'value': val} for val in config.get_categories()], style={'margin-bottom': '7px'},
                             placeholder='Category',
                         ),
                         dbc.Button('Save', id='save-button', style={'margin-bottom': '7px', 'margin-right': '4px'},
