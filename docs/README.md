@@ -45,12 +45,32 @@ view useful when locating the source of bugs  and errors and matched well with t
 ![flowchart2.png](..%2Fimages%2Fflowchart2.png)
 The flowchart above provides a general depiction of the workings of the app and how data is pulled from the database to form the dashboard page and how the dash app interacts with user input.
 
+**Workflow**
 
-UML
-DB
-FLOW CHART 
+I decided to use the jira board system by Atlassian to manage my tasks - this was very useful to keep track of little changes I was 
+hoping to make once I had developed the bulk of the app and wanted to take a bit of time to refine a few features and make them more robust.
+Provided below is a screenshot of the task manager I used:
 
-MVC
+![jira-board.png](../images/jira-board.png)
+
+**Implementation**
+Here I will dicuss features I used to develop my application:
+
+1. OOP - OOP composition was major to keeping my code organised as I maintained the Model and View class of which instances were created and used in the controller file (Controller.py).
+below are a breakdown of the classes created:
+![class_diagram.png](..%2Fimages%2Fclass_diagram.png)
+
+I also used composition and inheritance for the Card base class that created to have the default styling pre-set and reduce duplicate code:
+![card class.png](..%2Fimages%2Fcard%20class.png)
+
+This is an example of how I used this card to reduce duplicate code in my project:
+![example_Card.png](..%2Fimages%2Fexample_Card.png)
+
+As you can see I only need to create an instance of the card and then set the card content.
+
+
+
+
 OOP
 ADVANCED OOP
 REFACTORING
@@ -60,7 +80,7 @@ SQL
 config
 
 IMPLEMENTATION 
-![jira-board.png](../images/jira-board.png)
+
 TESTING 
 
 REVIEW
