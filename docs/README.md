@@ -134,10 +134,73 @@ This has helped majorly in getting cleaner code as shown in the before and after
 
 **Before:**
 
-![old_options.png](..%2Fimages%2Fold_options.png)
+![png.png](..%2Fimages%2Fpng.png)
 
 **After:**
 ![options_new.png](..%2Fimages%2Foptions_new.png)
+
+For reference this is a snippet of the config file which is a work in progress:
+![Config.png](..%2Fimages%2FConfig.png)
+
+BUDGET TRACKING 
+![BUDGETS.png](..%2Fimages%2FBUDGETS.png)
+
+I added a budgets card that allows students to see a visual represention of their spending in three very basic 
+categories. The budgets figures are preset to 50% for needs, 30% for school and 20% for fun.
+
+I also stuck to my goal of adding some form of financial education to my app, which can be found on the budgets page as well
+and I again used the card class I had previously created to reduce duplicate code.
+
+![financial term of the day.png](..%2Fimages%2Ffinancial%20term%20of%20the%20day.png)
+
+Please note: for the meanwhile, this has been hardcode, but I plan to have a database table where a quote can be published everyday and picked up by the card
+maker based on a date key:
+
+![quote_card_code.png](..%2Fimages%2Fquote_card_code.png)
 TESTING 
 
+I wanted to ensure my application was very robust and one of the areas I needed
+to cover was user input. We take user input when passing in transactions in the dashboard, so to tackle
+this I put together some test data:
+
+![TESTING_DATA.png](..%2Fimages%2FTESTING_DATA.png)
+
+I wanted to ensure that if the inputs were erroneous, they were not saved and that the user
+is notified that the data isn't going to be accepted by using warning dialogs as such:
+
+![error message.png](..%2Fimages%2Ferror%20message.png)
+
 REVIEW
+
+In conclusion: despite having achieved my objectives with this projects, I have definitely
+found room for improvement. To be frank:
+
+**Designed and Implemented Security**
+
+I believe this is where we fell short in terms of providing a very secure way of saving data into the databases. There are certain values that 
+I had hoped to put into a db such as the login details and due to time contraints I wasn't able to focus on researching encryption methods and I felt it was necessary to encrypt the
+transactions data to. Perhaps more planning in the beginning stages surrounding authentication would have been beneficial.
+
+**Approach to design and development**
+
+I am happy that I chose to embark on this project using Python and the dash framework as they both worked well hand in hand with object
+orientated programming. The development process did at times seem overwhelming as I hadn't anticipated some of features I had eventually added such as the AG grids that show stats such as 
+most prevalent spending method and going back into the code to refactor turned out to be a finicky but rewarding process. The refactoring had to be done quite carefully
+as the different files sometimes have dependencies. I also added the config file towards the later stages of development as it added an almost central point where you can configure certain values
+with ease without having to scan through lines and lines of code to find where the categories for the transaction dropdown are being set for 
+example 
+
+Further development/improvements Review.
+I do feel there are a few things I can improve:
+1. Ability to configure the budget values in the budgets page so that the user can decide how much they want to put towards school, needs and fun
+2. Ability to delete transactions if they have entered the wrong valur or want to change their description for e.g.
+3. Save daily quotes into a table with a key that holds the date and a value that holds the quote so that the card can pull the daily quote from that table in a db 
+4. More specific error messages when saving transactions because for now they are pretty generic
+
+
+Self-reflection and review on skills, experience and insights utilised and improved.
+
+I am very glad to have worked on this project as the Dash framework is something pretty new as a programmer as I feel it is such an efficient ways 
+to build web applications that are fully Python based but that can be further modified with CSS files or clientside callbacks to inject JS. I felt this was 
+also a perfect opportunity to work more with the pandas library and develop my understanding of OOP programming. All in all, a very fulfilling project.
+
