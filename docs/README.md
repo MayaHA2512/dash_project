@@ -84,16 +84,50 @@ b. updating tables
 
 ![update_tables.png](..%2Fimages%2Fupdate_tables.png)
 c. connecting sql functions to callbacks
+
 ![output.png](..%2Fimages%2Foutput.png)
 
 CALLBACKS
 
+Callbacks form the backbone of dash apps. They are what allows components such as tables, buttons and toggles
+to be interactive. An example of where I used these was in the login page:
+
+![login_page.png](..%2Fimages%2Flogin_page.png)
+
+There are two fields for the username and password respectively. Then we have the trigger which is the 'Login' button. Now let's
+break down the code behind it:
+
+![login_code.png](..%2Fimages%2Flogin_code.png)
+
+We need to clarify three things:
+- the Input 
+- the Output 
+- the State
+
+The input is what triggers the function 'login_auth' under the callback, the Ouput is the type
+of object you want to return. In this case we want to return an url (to the dashboard page) and a message that we add
+to a container below that can show whether the login was successful. Then if we look at the 'login_auth' function we check if the login details 
+match the currently hard coded ones and the return the url of the dashboard if they match or no update if not.
+
+When we provide that url, we trigger another callback:
+
+![url_code.png](..%2Fimages%2Furl_code.png)
+
+This checks the url and provides layouts that are rendered depending on the URL.
 
 REFACTORING
-CALLBACKS
-PLOTLY
-SQL
-config
+
+Refactoring became an integral part of keeping the project under a manageable size as we call for the data 
+in the databases quite a few times so, I removed all the repetitive code that kept connecting to the db just to
+return what was in there without any modifications into one singular function in the Model class, which can easily be
+accessed.
+
+![df .png](..%2Fimages%2Fdf%20.png)
+
+As you can see this function is reused up to 5 times throughout the project which has dramatically reduced the volume of 
+repetitive code
+
+
 
 IMPLEMENTATION 
 
