@@ -10,7 +10,7 @@ class model:
     def connect_to_data_db(self, description, category, amount, method, type):
         current_datetime = datetime.datetime.now()
         formatted_datetime = current_datetime.strftime('%Y-%m-%d %H:%M:%S')
-        conn = sqlite3.connect('dash.db')
+        conn = sqlite3.connect('../databases/dash.db')
         c = conn.cursor()
         c.execute(
             "INSERT OR IGNORE INTO transactions_tbl (description, category, amount, method, type, date) VALUES (?, ?, "
@@ -31,7 +31,7 @@ class model:
         return items
 
     def get_balance(self):
-        conn = sqlite3.connect('dash.db')
+        conn = sqlite3.connect('../databases/dash.db')
         c = conn.cursor()
         c.execute('SELECT balance FROM wallet WHERE id = 1')
         balance = c.fetchone()[0]  # a separate table holds the current balance and this is updated when a
@@ -40,7 +40,7 @@ class model:
         return f"{balance:.2f}"
 
     def update_balance(self, description, category, current, new_val, selected_method):
-        conn = sqlite3.connect('dash.db')
+        conn = sqlite3.connect('../databases/dash.db')
         c = conn.cursor()
         new_balance = float(new_val) + float(current)  # updating the old balance with new transactions
         self.connect_to_data_db(description=description, category=category, amount=new_val, method=selected_method,
@@ -51,7 +51,7 @@ class model:
         return f"{new_balance:.2f}"
 
     def spend_balance(self, description, category, current, new_val, selected_method):
-        conn = sqlite3.connect('dash.db')
+        conn = sqlite3.connect('../databases/dash.db')
         c = conn.cursor()
         new_balance = float(current) - float(new_val)
         self.connect_to_data_db(description=description, category=category, amount=new_val, method=selected_method,
@@ -63,7 +63,7 @@ class model:
         return f"{new_balance:.2f}"
 
     def get_data_df(self):  # get a dataframe of the data in the transactions table of the db
-        conn = sqlite3.connect('dash.db')
+        conn = sqlite3.connect('../databases/dash.db')
         query = 'SELECT * FROM transactions_tbl'
         df = pd.read_sql_query(query, conn)
         conn.close()

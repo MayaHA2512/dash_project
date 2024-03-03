@@ -1,7 +1,7 @@
 import sqlite3
 #
 #
-conn = sqlite3.connect('dash.db')
+conn = sqlite3.connect('../databases/dash.db')
 c = conn.cursor()
 #
 # # Create table if it doesn't exist
@@ -19,7 +19,7 @@ def create_tbl():
 
 
 def delete_data():
-    conn = sqlite3.connect('dash.db')
+    conn = sqlite3.connect('../databases/dash.db')
     c = conn.cursor()
 
     # Delete all data from the budget_table
@@ -44,14 +44,14 @@ def get_data():
 
 # import sqlite3
 def add_col():
-    conn = sqlite3.connect('example.db')
+    conn = sqlite3.connect('../databases/example.db')
     cur = conn.cursor()
     cur.execute('ALTER TABLE transactions_tbl ADD COLUMN date TEXT')
     conn.commit()
 
 
 def update_val():
-    conn = sqlite3.connect('dash.db')
+    conn = sqlite3.connect('../databases/dash.db')
     c = conn.cursor()
     c.execute('UPDATE wallet SET balance =  ? WHERE id = 1', (327.50,))
     conn.commit()

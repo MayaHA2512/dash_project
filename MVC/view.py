@@ -1,10 +1,10 @@
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_bootstrap_components as dbc
-from model import model
+from MVC.model import model
 import dash_ag_grid as dag
 import plotly.express as px
-from card import Card
+from components.card import Card
 
 model_cfg = model()
 
