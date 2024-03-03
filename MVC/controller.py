@@ -78,7 +78,7 @@ def update_output(save_clicks, spend_clicks, user_input, selected_val, category,
         # number
         try:
             val = int(user_input)
-            if type(description) == str and val > 0 and val is not None:
+            if type(description) == str and val > 0 and val is not None and description is not None:
                 # the function below appends the data to the db and when the refresh button is hit it will trigger
                 # the pie chart table to update with the new transactions
                 new_balance = model.update_balance(current=current_val, new_val=user_input,

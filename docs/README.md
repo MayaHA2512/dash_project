@@ -53,10 +53,13 @@ Provided below is a screenshot of the task manager I used:
 
 ![jira-board.png](../images/jira-board.png)
 
-**Implementation**
+**IMPLEMENTATION**
+
 Here I will dicuss features I used to develop my application:
 
-1. OOP - OOP composition was major to keeping my code organised as I maintained the Model and View class of which instances were created and used in the controller file (Controller.py).
+OOP
+
+OOP composition was major to keeping my code organised as I maintained the Model and View class of which instances were created and used in the controller file (Controller.py).
 below are a breakdown of the classes created:
 ![class_diagram.png](..%2Fimages%2Fclass_diagram.png)
 
@@ -68,11 +71,24 @@ This is an example of how I used this card to reduce duplicate code in my projec
 
 As you can see I only need to create an instance of the card and then set the card content.
 
+DATABASES 
+
+Databases laid the foundations for collecting, saving and rendering grids with data loaded from previous sessions of the application running
+The process of setting up the database system involved:
+
+a. creating tables
+
+![database_code.png](..%2Fimages%2Fdatabase_code.png)
+
+b. updating tables
+
+![update_tables.png](..%2Fimages%2Fupdate_tables.png)
+c. connecting sql functions to callbacks
+![output.png](..%2Fimages%2Foutput.png)
+
+CALLBACKS
 
 
-
-OOP
-ADVANCED OOP
 REFACTORING
 CALLBACKS
 PLOTLY
