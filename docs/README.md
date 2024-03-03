@@ -61,6 +61,7 @@ OOP
 
 OOP composition was major to keeping my code organised as I maintained the Model and View class of which instances were created and used in the controller file (Controller.py).
 below are a breakdown of the classes created:
+
 ![class_diagram.png](..%2Fimages%2Fclass_diagram.png)
 
 I also used composition and inheritance for the Card base class that created to have the default styling pre-set and reduce duplicate code:
@@ -142,7 +143,9 @@ This has helped majorly in getting cleaner code as shown in the before and after
 For reference this is a snippet of the config file which is a work in progress:
 ![Config.png](..%2Fimages%2FConfig.png)
 
+
 BUDGET TRACKING 
+
 ![BUDGETS.png](..%2Fimages%2FBUDGETS.png)
 
 I added a budgets card that allows students to see a visual represention of their spending in three very basic 
@@ -157,6 +160,7 @@ Please note: for the meanwhile, this has been hardcode, but I plan to have a dat
 maker based on a date key:
 
 ![quote_card_code.png](..%2Fimages%2Fquote_card_code.png)
+
 TESTING 
 
 I wanted to ensure my application was very robust and one of the areas I needed
